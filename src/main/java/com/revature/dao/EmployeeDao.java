@@ -1,5 +1,7 @@
 package com.revature.dao;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -23,7 +25,13 @@ public class EmployeeDao {
 	
 	public List<Employee>findAll(){
 		
+		Session ses = HibernateUtil.getSession();
 		
+		//HQL - Hibernate Query Langauge: odd mix of OOP and Native SQL
+		
+		List<Employees>emps = ses.createQuery("from Employees", Employees.class).list();
+		
+		return emps;
 		
 	}
 	
