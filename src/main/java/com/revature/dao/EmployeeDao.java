@@ -23,7 +23,7 @@ public class EmployeeDao {
 		
 	}
 	
-	public List<Employee>findAll(){
+	public List<Employees>findAll(){
 		
 		Session ses = HibernateUtil.getSession();
 		
@@ -39,7 +39,7 @@ public class EmployeeDao {
 		return false;
 	}
 	
-	public boolean update(Employee e) {
+	public boolean update(Employees e) {
 		return false;
 	}
 }
