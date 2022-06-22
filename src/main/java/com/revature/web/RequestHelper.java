@@ -2,6 +2,7 @@ package com.revature.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,73 @@ public class RequestHelper {
 	// object mapper (for frontend)
 	private static ObjectMapper om = new ObjectMapper();
 	
+	public static void processEmployees(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		//http://localhost:8080/employee-servlet-app/employees
+		//will return me an entire list of all the employees in JSON
+		// 1. set the content type to be application/json
+		response.setContentType("text/html");
+	//	response.setContentType("application/json");
+		
+		//2. Call the findAll() method from the employee service
+		List<Employee> emps = eserv.getAll();
+		
+		
+		//3. transfrom the list to a String
+		
+		String jsonString = om.writeValueAsString(emps);
+		
+		//write it out
+		
+		PrintWriter out = response.getWriter();
+		out.write(jsonString); // write the String to the response body
+	}
+	
+	public static void processRegistration(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+//		1. extract all values from the params
+		
+		String firstname = request.getParameter("firstname");
+		String lastname = request.getParameter("lastname");
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+//		
+//		2. construct a new employee object
+		
+		Employee e = new Employee(firstname, lastname, username, password);
+		
+		int pk = eserv.register(e);
+//		
+//		3. call the register() method from the service layer
+//		
+		if(pk>0) {
+			
+			e.setId(pk);
+			
+			//add the user to the session
+			HttpSession session = request.getSession();
+			session.setAttribute("the-user", e);
+			
+			request.getRequestDispatcher("welcome.html").forward(request, response);
+			//using the request dispatcher, forward the request and response to a new resource...
+			// send the user to a ne page -- welcome.html
+			
+		} else {
+//		4. check it's ID...if its > 0 it's successfull
+//				using the request dispatcher, forward the request and response to a new resource....
+//				send the user to a new page -- welcome.html
+		
+			PrintWriter out = response.getWriter();
+			response.setContentType("text/html");
+			
+			out.println("<h1>Registration failed...Username already exists</h1>");
+			out.println("<a href=\"index.html\">Back</a>");
+			
+
+//				if its -1 that means the registration method failed ( that might be a duplicate )
+				
+		}
+	}
 	
 	/**
 	 * What does this method do?
