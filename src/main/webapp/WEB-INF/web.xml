@@ -17,5 +17,6 @@
     <url-pattern>/register</url-pattern>
     <!-- http://localhost:8080/employee-servlet-app/login -->
     <!-- http://localhost:8080/employee-servlet-app/employees -->
+    <!-- http://localhost:8080/employee-servlet-app/register -->
   </servlet-mapping>
 </web-app>
